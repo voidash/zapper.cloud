@@ -1,0 +1,19 @@
+services:
+  zap:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - zap-data:/data
+    environment:
+      - RUST_LOG=info
+      - ZAP_TEMP_DIR=/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+
+volumes:
+  zap-data:
