@@ -233,6 +233,8 @@ async fn install_script() -> Response {
         .into_response()
 }
 
+/// Returns update script if available (empty string means no update)
+/// Check UPDATE_SCRIPT env var or /var/lib/zap/update.sh file
 
 async fn ready(State(state): State<AppState>) -> Response {
     // Check if we can access the temp directory
@@ -1517,50 +1519,65 @@ set -e
 # zap installer script
 # Usage: curl -fsSL https://zapper.cloud/install.sh | sh
 
-REPO=\"voidash/zapper.cloud\"
-INSTALL_DIR=\"/usr/local/bin\"
+REPO="voidash/zapper.cloud"
+INSTALL_DIR="/usr/local/bin"
+ZAP_BIN=""
 
+# Detect OS and architecture
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 ARCH=$(uname -m)
 
-case \"$ARCH\" in
-    x86_64|amd64) ARCH=\"x86_64\" ;;
-    arm64|aarch64) ARCH=\"arm64\" ;;
-    *) echo \"Unsupported architecture: $ARCH\"; exit 1 ;;
+case "$ARCH" in
+    x86_64|amd64) ARCH="x86_64" ;;
+    arm64|aarch64) ARCH="arm64" ;;
+    *) echo "Unsupported architecture: $ARCH"; exit 1 ;;
 esac
 
-case \"$OS\" in
-    linux) PLATFORM=\"linux-$ARCH\" ;;
-    darwin) PLATFORM=\"darwin-$ARCH\" ;;
-    *) echo \"Unsupported OS: $OS\"; exit 1 ;;
+case "$OS" in
+    linux) PLATFORM="linux-$ARCH" ;;
+    darwin) PLATFORM="darwin-$ARCH" ;;
+    *) echo "Unsupported OS: $OS"; exit 1 ;;
 esac
 
-echo \"Detected platform: $PLATFORM\"
+echo "Detected platform: $PLATFORM"
 
-LATEST_URL=\"https://api.github.com/repos/$REPO/releases/latest\"
-DOWNLOAD_URL=$(curl -fsSL \"$LATEST_URL\" | grep \"browser_download_url.*$PLATFORM\" | cut -d '"' -f 4)
+# Get latest release URL
+LATEST_URL="https://api.github.com/repos/$REPO/releases/latest"
+DOWNLOAD_URL=$(curl -fsSL "$LATEST_URL" | grep "browser_download_url.*$PLATFORM" | cut -d '"' -f 4)
 
-if [ -z \"$DOWNLOAD_URL\" ]; then
-    echo \"Could not find release for $PLATFORM\"
+if [ -z "$DOWNLOAD_URL" ]; then
+    echo "Could not find release for $PLATFORM"
+    echo ""
+    echo "Build from source instead:"
+    echo "  git clone https://github.com/$REPO.git"
+    echo "  cd zap && cargo build --release"
     exit 1
 fi
 
-echo \"Downloading from: $DOWNLOAD_URL\"
+echo "Downloading from: $DOWNLOAD_URL"
 
+# Download and install
 TMP_FILE=$(mktemp)
-curl -fsSL \"$DOWNLOAD_URL\" -o \"$TMP_FILE\"
-chmod +x \"$TMP_FILE\"
+curl -fsSL "$DOWNLOAD_URL" -o "$TMP_FILE"
+chmod +x "$TMP_FILE"
 
-if [ -w \"$INSTALL_DIR\" ]; then
-    mv \"$TMP_FILE\" \"$INSTALL_DIR/zap\"
-    echo \"Installed to $INSTALL_DIR/zap\"
+# Try to install to /usr/local/bin, fall back to ~/.local/bin
+if [ -w "$INSTALL_DIR" ]; then
+    mv "$TMP_FILE" "$INSTALL_DIR/zap"
+    ZAP_BIN="$INSTALL_DIR/zap"
+    echo "Installed to $INSTALL_DIR/zap"
 else
-    mkdir -p \"$HOME/.local/bin\"
-    mv \"$TMP_FILE\" \"$HOME/.local/bin/zap\"
-    echo \"Installed to $HOME/.local/bin/zap\"
-    echo \"Add to PATH: export PATH=\\\"\$HOME/.local/bin:\$PATH\\\"\"
+    mkdir -p "$HOME/.local/bin"
+    mv "$TMP_FILE" "$HOME/.local/bin/zap"
+    ZAP_BIN="$HOME/.local/bin/zap"
+    echo "Installed to $HOME/.local/bin/zap"
+    echo ""
+    echo "Add to your PATH:"
+    echo '  export PATH="$HOME/.local/bin:$PATH"'
 fi
 
-echo \"Run 'zap --help' to get started!\"
+echo ""
+echo "Run 'zap --help' to get started!"
+
 "##;
 
