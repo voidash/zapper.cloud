@@ -1,0 +1,11 @@
+/Users/cdjk/github/better-clean-croc/target/debug/deps/hybrid_array-8d074281a558ed20.d: /Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/lib.rs /Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/sizes.rs /Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/flatten.rs /Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/from_fn.rs /Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/iter.rs /Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/traits.rs /Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/../README.md
+
+/Users/cdjk/github/better-clean-croc/target/debug/deps/libhybrid_array-8d074281a558ed20.rmeta: /Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/lib.rs /Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/sizes.rs /Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/flatten.rs /Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/from_fn.rs /Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/iter.rs /Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/traits.rs /Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/../README.md
+
+/Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/lib.rs:
+/Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/sizes.rs:
+/Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/flatten.rs:
+/Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/from_fn.rs:
+/Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/iter.rs:
+/Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/traits.rs:
+/Users/cdjk/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/hybrid-array-0.4.7/src/../README.md:

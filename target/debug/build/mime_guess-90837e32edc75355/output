@@ -1,0 +1,1 @@
+cargo:rustc-env=MIME_TYPES_GENERATED_PATH=/Users/cdjk/github/better-clean-croc/target/debug/build/mime_guess-90837e32edc75355/out/mime_types_generated.rs

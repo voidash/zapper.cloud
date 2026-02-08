@@ -109,7 +109,6 @@ pub async fn run(addr: SocketAddr) -> Result<()> {
         .allow_methods(Any)
         .allow_headers(Any);
 
-
     let app = Router::new()
         .route("/", get(index))
         .route("/health", get(health))
@@ -220,7 +219,6 @@ async fn health() -> &'static str {
     "ok"
 }
 
-
 async fn install_page() -> Html<&'static str> {
     Html(INSTALL_HTML)
 }
@@ -232,9 +230,6 @@ async fn install_script() -> Response {
     )
         .into_response()
 }
-
-/// Returns update script if available (empty string means no update)
-/// Check UPDATE_SCRIPT env var or /var/lib/zap/update.sh file
 
 async fn ready(State(state): State<AppState>) -> Response {
     // Check if we can access the temp directory
@@ -1078,6 +1073,7 @@ const INDEX_HTML: &str = r##"<!DOCTYPE html>
             border-radius: 5px;
             opacity: 0.3;
             transform: translate(2px, 2px);
+            pointer-events: none;
         }
         
         /* Wobbly animations */
@@ -1164,6 +1160,8 @@ const INDEX_HTML: &str = r##"<!DOCTYPE html>
                 rgba(0,0,0,0.02) 20px
             );
             transition: all 0.2s;
+            position: relative;
+            z-index: 1;
         }
         .sketch-drop:hover, .sketch-drop.dragover {
             border-color: var(--accent-blue);
@@ -1262,11 +1260,11 @@ const INDEX_HTML: &str = r##"<!DOCTYPE html>
                     <h2 class="font-title text-3xl">Send a file</h2>
                 </div>
                 <form hx-post="/send" hx-target="#send-result" hx-swap="innerHTML" hx-encoding="multipart/form-data">
-                    <div id="drop-zone" class="sketch-drop rounded-lg p-8 text-center cursor-pointer mb-4" onclick="document.getElementById('file-input').click()">
-                        <input type="file" name="file" id="file-input" required class="hidden" onchange="updateFileName(this)">
+                    <label for="file-input" id="drop-zone" class="sketch-drop rounded-lg p-8 text-center cursor-pointer mb-4 block">
+                        <input type="file" name="file" id="file-input" required style="position:absolute;width:1px;height:1px;opacity:0;overflow:hidden;" onchange="updateFileName(this)">
                         <div class="text-5xl mb-3">📁</div>
                         <p id="file-name" class="text-lg text-ink-light">click or drop a file here!</p>
-                    </div>
+                    </label>
                     <button type="submit" class="sketch-btn w-full">
                         Send it! →
                     </button>
@@ -1292,28 +1290,6 @@ const INDEX_HTML: &str = r##"<!DOCTYPE html>
                     </button>
                 </form>
                 <div id="receive-result" class="mt-4"></div>
-            </div>
-        </div>
-
-        <!-- Features (hand-drawn style) -->
-        <div class="sketch-card p-6 mb-12" style="transform: rotate(0.3deg);">
-            <h3 class="font-title text-2xl text-center mb-6">why zap? ✨</h3>
-            <div class="grid grid-cols-3 gap-4 text-center">
-                <div>
-                    <div class="text-3xl mb-2">🔐</div>
-                    <div class="font-title text-xl">encrypted</div>
-                    <div class="text-sm text-ink-light">end-to-end</div>
-                </div>
-                <div>
-                    <div class="text-3xl mb-2">🚀</div>
-                    <div class="font-title text-xl">fast</div>
-                    <div class="text-sm text-ink-light">peer-to-peer</div>
-                </div>
-                <div>
-                    <div class="text-3xl mb-2">🌍</div>
-                    <div class="font-title text-xl">anywhere</div>
-                    <div class="text-sm text-ink-light">works everywhere</div>
-                </div>
             </div>
         </div>
 
@@ -1578,6 +1554,4 @@ fi
 
 echo ""
 echo "Run 'zap --help' to get started!"
-
 "##;
-
